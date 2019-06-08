@@ -25,6 +25,7 @@
     <modules>
         <module>word-count</module>
         <module>favourite-colour</module>
+        <module>bank-balance-exactly-once</module>
     </modules>
 
     <dependencies>
