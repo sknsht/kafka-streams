@@ -82,3 +82,30 @@ ann, green
 alex, blue
 ann, blue
 ```
+
+## Bank Balance
+
+Demonstration of the **exactly once** semantics on the example of bank transactions.
+
+### Step 1: Prepare the topics
+
+Create a topic named **bank-transactions** in which the producer will write the generated transactions and the output topic named **bank-balance**:
+```shell
+> bin\windows\kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic bank-transactions
+> bin\windows\kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic bank-balance
+```
+### Step 2: Run the console consumer
+
+Run the console consumer for the topic that displays the generated transactions and for the topic that displays the current balance:
+```shell
+> bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic bank-transactions --from-beginning
+> bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic bank-balance --from-beginning --formatter kafka.tools.DefaultMessageFormatter --property print.key=true --property print.value=true --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer --property value.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+```
+
+### Step 3: Run the java Producer
+
+The producer generates user transaction json objects that contain the name, time of the transaction, and random amount from -100 to 100. 
+
+### Step 4: Run the BankBalance java application
+
+The application generates a json object with the number of user transactions, current balance and time of the last transaction.
